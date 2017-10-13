@@ -10,5 +10,23 @@ void main() {
 clickedOnEnter(e) {
   InputElement input = querySelector('#commands');
   input.style.borderColor = "#55FF55";
-  querySelector('#output').appendHtml('<div>${input.value}</div>');
+  String output = '';
+  switch(input.value) {
+    case 'left':
+      output = 'You are now going left.';
+      break;
+    case 'right':
+      output = 'You are now going right.';
+      break;
+    case 'up':
+      output = 'You are now going up.';
+      break;
+    case 'down':
+      output = 'You are now going down.';
+      break;
+    default:
+      output = 'Please enter: left, right, up or down.';
+  }
+  var outputHTML = '<div>${output}</div>';
+  querySelector('#output').appendHtml(outputHTML);
 }
