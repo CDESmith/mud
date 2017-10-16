@@ -3,9 +3,14 @@
 
 import 'dart:html';
 
+int x = 0, y = 0;
+
 void main() {
   querySelector('#enter').onClick.listen(clickedOnEnter);
+  updateCoordinates(0, 0);
 }
+
+Environment myEnvironment = new Environment('Wood');
 
 clickedOnEnter(e) {
   InputElement input = querySelector('#commands');
@@ -29,4 +34,26 @@ clickedOnEnter(e) {
   }
   var outputHTML = '<div>${output}</div>';
   querySelector('#output').appendHtml(outputHTML);
+
+  var interaction = myEnvironment.stumbleUpon();
+  outputHTML = "<div>${interaction}</div>";
+  querySelector('#output').appendHtml(outputHTML);
+}
+
+void updateCoordinates(int rel_x, int rel_y) {
+  x += rel_x;
+  y += rel_y;
+
+  querySelector('#coordinates').innerHtml = 'place : $x, $y';
+}
+
+class Environment {
+
+  String name;
+
+  Environment(this.name);
+
+  String stumbleUpon() {
+    return '${this.name} You stumbled upon something';
+  }
 }
