@@ -1,77 +1,59 @@
 // Copyright (c) 2017, Callum D E Smith. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
-
 import 'dart:html';
+
+import 'lib/mud.dart';
 
 int x = 0, y = 0;
 
 void main() {
-  querySelector('#enter').onClick.listen(clickedOnEnter);
-  updateCoordinates(0, 0);
+  querySelector("#enter").onClick.listen(clickedOnEnter);
+
+  updateCoordinates(0,0);
 }
 
-Environment myEnvironment = new Environment('Wood');
+Environment myEnvironment = new Environment("Wood");
 
-clickedOnEnter(e) {
-  InputElement input = querySelector('#commands');
-  input.style.borderColor = "#55FF55";
-  String output = '';
-  switch(input.value) {
-    case 'left':
-      output = 'You are now going left.';
-      break;
-    case 'right':
-      output = 'You are now going right.';
-      break;
-    case 'up':
-      output = 'You are now going up.';
-      break;
-    case 'down':
-      output = 'You are now going down.';
-      break;
-    default:
-      output = 'Please enter: left, right, up or down.';
+void clickedOnEnter(e) {
+  InputElement input = querySelector("#commands");
+
+  String output = "";
+
+  switch (input.value) {
+  case 'left':
+    updateCoordinates(-1, 0);
+    output = "You are going left now.";
+    break;
+  case 'right':
+    updateCoordinates(1, 0);
+    output = "You are going right, are you sure?";
+    break;
+  case 'up':
+    updateCoordinates(0, -1);
+    output = "You are going up, are you sure?";
+    break;
+  case 'down':
+    updateCoordinates(0, 1);
+    output = "You are going down, are you sure?";
+    break;
+  default:
+    output = "Use left, right, up, down please ...";
   }
-  var outputHTML = '<div>${output}</div>';
+
+  var outputHTML = "<div>${output}</div>";
+
   querySelector('#output').appendHtml(outputHTML);
 
   var interaction = myEnvironment.stumbleUpon();
-  outputHTML = "<div>${interaction}</div>";
+  outputHTML= "<div>${interaction}</div>";
   querySelector('#output').appendHtml(outputHTML);
+
+  input.style.borderColor = "#55FF55";
 }
 
 void updateCoordinates(int rel_x, int rel_y) {
   x += rel_x;
   y += rel_y;
 
-  querySelector('#coordinates').innerHtml = 'place : $x, $y';
-}
-
-class Environment {
-
-  String name;
-
-  Encounter encounter = new Bear();
-
-  Environment(this.name);
-
-  String stumbleUpon() {
-    return '${this.name} You stumbled upon something. ${this.encounter.whenEncounter()}';
-  }
-}
-
-abstract class Encounter {
-  whenEncounter();
-}
-
-class Bear extends Encounter {
-  whenEncounter() {
-    return 'Grr, you encountered a bear.';
-  }
-}
-
-class Ghost extends Encounter {
-  whenEncounter() {
-    return 'Boo, you encountered a ghost.';
-  }
+  querySelector("#coordinates").innerHtml = "Place : $x , $y";
 }
